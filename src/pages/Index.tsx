@@ -1,6 +1,7 @@
 import { StreakButton } from "@/components/StreakButton";
 import { StreakStats } from "@/components/StreakStats";
 import { ProgressChart } from "@/components/ProgressChart";
+import { CommunityTotal } from "@/components/CommunityTotal";
 
 const Index = () => {
   return (
@@ -10,6 +11,7 @@ const Index = () => {
           <h1 className="text-4xl font-bold text-center">Sober Days</h1>
           
           <div className="flex flex-col items-center gap-12 mt-8">
+            <CommunityTotal />
             <StreakButton />
             <StreakStats />
             <ProgressChart />
