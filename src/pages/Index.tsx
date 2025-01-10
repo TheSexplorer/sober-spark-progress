@@ -1,7 +1,7 @@
 import { StreakButton } from "@/components/StreakButton";
 import { StreakStats } from "@/components/StreakStats";
-import { ProgressChart } from "@/components/ProgressChart";
 import { CommunityTotal } from "@/components/CommunityTotal";
+import { ChatSupport } from "@/components/ChatSupport";
 
 const Index = () => {
   return (
@@ -14,7 +14,7 @@ const Index = () => {
             <CommunityTotal />
             <StreakButton />
             <StreakStats />
-            <ProgressChart />
+            <ChatSupport />
           </div>
         </div>
       </div>
