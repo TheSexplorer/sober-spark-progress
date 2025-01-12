@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 
 export const CommunityTotal = () => {
   const communityTotal = 2345678; // This would come from your backend
-  const goal = 10000000;
+  const goal = 1000000;
   const percentage = Math.round((communityTotal / goal) * 100);
 
   const formatNumber = (num: number) => {
