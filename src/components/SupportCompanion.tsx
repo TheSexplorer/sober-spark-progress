@@ -28,7 +28,7 @@ export const SupportCompanion = () => {
       setTimeout(() => {
         setMessages(prev => [...prev, {
           role: "assistant",
-          content: "I'm here to support you on your journey. Remember that every day sober is a victory, and you're not alone in this. What's on your mind?"
+          content: "I'm your Sober Supportive Companion, and I'm always here for you! Tell me about your day - every step forward is worth celebrating. 🌟"
         }]);
         setIsLoading(false);
       }, 1000);
@@ -41,7 +41,7 @@ export const SupportCompanion = () => {
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader>
-        <CardTitle className="text-lg">Your Supportive Companion</CardTitle>
+        <CardTitle className="text-lg">Your Sober Supportive Companion</CardTitle>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[300px] pr-4 mb-4">
@@ -76,7 +76,7 @@ export const SupportCompanion = () => {
         
         <div className="flex gap-2">
           <Input
-            placeholder="Type your message..."
+            placeholder="Tell me about your day..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {

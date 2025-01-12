@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export const CommunityTotal = () => {
-  const communityTotal = 2345678; // This would come from your backend
+  const communityTotal = 23456; // This would come from your backend
   const goal = 1000000;
   const percentage = Math.round((communityTotal / goal) * 100);
 
