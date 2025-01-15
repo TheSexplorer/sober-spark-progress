@@ -34,10 +34,7 @@ export const StreakButton = () => {
             <span>Logged!</span>
           </div>
         ) : (
-          <div className="flex flex-col items-center">
-            <span>Log Today</span>
-            <span className="text-sm mt-1 opacity-80">Every Day Counts</span>
-          </div>
+          <span>Log Today</span>
         )}
       </Button>
     </div>

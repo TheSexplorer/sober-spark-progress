@@ -28,7 +28,7 @@ export const SupportCompanion = () => {
       setTimeout(() => {
         setMessages(prev => [...prev, {
           role: "assistant",
-          content: "I'm your Sober Supportive Companion, and I'm always here for you! Tell me about your day - every step forward is worth celebrating. 🌟"
+          content: "You did great! Thank you so much for contributing to our movement. Every step you take strengthens not just your journey, but inspires our entire community. I'm here to support you - what else would you like to share? 🌟"
         }]);
         setIsLoading(false);
       }, 1000);
