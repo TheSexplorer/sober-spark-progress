@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Check } from "lucide-react";
+import { incrementCommunityTotal } from "./CommunityTotal";
 
 export const StreakButton = () => {
   const [isLogged, setIsLogged] = useState(false);
@@ -10,6 +11,10 @@ export const StreakButton = () => {
   const handleLogDay = () => {
     if (!isLogged) {
       setIsLogged(true);
+      incrementCommunityTotal();
+      // Update the community total display
+      (window as any).updateCommunityTotalDisplay?.();
+      
       toast({
         title: "Day logged successfully! 🎉",
         description: "Keep up the great work! Every day counts.",

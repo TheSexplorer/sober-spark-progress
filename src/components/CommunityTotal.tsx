@@ -1,13 +1,28 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+
+// Create a singleton to maintain the count across component remounts
+let globalCommunityTotal = 23456;
+
+export const getCommunityTotal = () => globalCommunityTotal;
+export const incrementCommunityTotal = () => {
+  globalCommunityTotal += 1;
+  return globalCommunityTotal;
+};
 
 export const CommunityTotal = () => {
-  const communityTotal = 23456; // This would come from your backend
+  const [communityTotal, setCommunityTotal] = useState(globalCommunityTotal);
   const goal = 1000000;
   const percentage = Math.round((communityTotal / goal) * 100);
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat('en-US').format(num);
+  };
+
+  // Expose a way to update the display
+  (window as any).updateCommunityTotalDisplay = () => {
+    setCommunityTotal(globalCommunityTotal);
   };
 
   return (
