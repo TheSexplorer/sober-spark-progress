@@ -11,8 +11,8 @@ const Index = () => {
 
   const handleUnlockRewards = () => {
     toast({
-      title: "Coming Soon!",
-      description: "Rewards feature will be available in the next update.",
+      title: "Sign Up Required",
+      description: "Create an account to unlock your rewards and track your progress.",
     });
   };
 
@@ -35,7 +35,7 @@ const Index = () => {
               className="gap-2"
             >
               <Gift className="h-4 w-4" />
-              Unlock Your Rewards
+              Sign Up to Unlock Rewards
             </Button>
             <SupportCompanion />
           </div>
