@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { incrementCommunityTotal } from "@/components/CommunityTotal";
 
 const Index = () => {
   const { toast } = useToast();
@@ -25,8 +26,10 @@ const Index = () => {
     e.preventDefault();
     if (!email) return;
     
-    // Here you would typically send the email to your backend
-    console.log("Signing up email:", email);
+    // Increment the community total
+    incrementCommunityTotal();
+    // Update the display
+    (window as any).updateCommunityTotalDisplay?.();
     
     setIsDialogOpen(false);
     setEmail("");
