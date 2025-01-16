@@ -21,6 +21,7 @@ const Index = () => {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(false);
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,11 +34,16 @@ const Index = () => {
     
     setIsDialogOpen(false);
     setEmail("");
+    setIsSignedUp(true);
     
     toast({
       title: "Welcome to the community! 🎉",
       description: "We just emailed you your Super Sexy Sober Gift! Check your inbox.",
     });
+  };
+
+  const handleNeedSignUp = () => {
+    setIsDialogOpen(true);
   };
 
   return (
@@ -51,7 +57,7 @@ const Index = () => {
           
           <div className="flex flex-col items-center gap-12">
             <CommunityTotal />
-            <StreakButton />
+            <StreakButton isSignedUp={isSignedUp} onNeedSignUp={handleNeedSignUp} />
             <StreakStats />
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>

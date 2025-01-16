@@ -4,11 +4,21 @@ import { useToast } from "@/components/ui/use-toast";
 import { Check } from "lucide-react";
 import { incrementCommunityTotal } from "./CommunityTotal";
 
-export const StreakButton = () => {
+interface StreakButtonProps {
+  isSignedUp: boolean;
+  onNeedSignUp: () => void;
+}
+
+export const StreakButton = ({ isSignedUp, onNeedSignUp }: StreakButtonProps) => {
   const [isLogged, setIsLogged] = useState(false);
   const { toast } = useToast();
 
   const handleLogDay = () => {
+    if (!isSignedUp) {
+      onNeedSignUp();
+      return;
+    }
+
     if (!isLogged) {
       setIsLogged(true);
       incrementCommunityTotal();
