@@ -28,7 +28,7 @@ export const CommunityTotal = () => {
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg">Community Total</CardTitle>
+        <CardTitle className="text-lg text-center">Community Total</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center gap-4">
