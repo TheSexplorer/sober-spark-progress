@@ -14,32 +14,64 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { incrementCommunityTotal } from "@/components/CommunityTotal";
+import { supabase } from "@/lib/supabase";
 
 const Index = () => {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSignedUp, setIsSignedUp] = useState(false);
 
-  const handleSignUp = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    
-    // Increment the community total
-    incrementCommunityTotal();
-    // Update the display
-    (window as any).updateCommunityTotalDisplay?.();
-    
-    setIsDialogOpen(false);
-    setEmail("");
-    setIsSignedUp(true);
-    
-    toast({
-      title: "Welcome to the community! 🎉",
-      description: "We just emailed you your Super Sexy Sober Gift! Check your inbox.",
+  useEffect(() => {
+    // Check if user is already signed in
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsSignedUp(!!user);
+    };
+    checkUser();
+
+    // Subscribe to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsSignedUp(!!session);
     });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      // Increment the community total
+      incrementCommunityTotal();
+      // Update the display
+      (window as any).updateCommunityTotalDisplay?.();
+      
+      setIsDialogOpen(false);
+      setEmail("");
+      setPassword("");
+      
+      toast({
+        title: "Welcome to the community! 🎉",
+        description: "Please check your email to verify your account.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   const handleNeedSignUp = () => {
@@ -60,20 +92,11 @@ const Index = () => {
             <StreakButton isSignedUp={isSignedUp} onNeedSignUp={handleNeedSignUp} />
             <StreakStats />
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="gap-2"
-                >
-                  <Gift className="h-4 w-4" />
-                  Sign Up to Unlock Rewards
-                </Button>
-              </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Join Our Sober Community</DialogTitle>
                   <DialogDescription>
-                    Enter your email to receive your exclusive Sober Gift and unlock rewards.
+                    Create an account to track your progress and contribute to our community.
                   </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSignUp} className="space-y-4 mt-4">
@@ -84,8 +107,16 @@ const Index = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
+                  <Input
+                    type="password"
+                    placeholder="Choose a password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={6}
+                  />
                   <Button type="submit" className="w-full">
-                    Get My Sober Gift
+                    Sign Up
                   </Button>
                 </form>
               </DialogContent>
