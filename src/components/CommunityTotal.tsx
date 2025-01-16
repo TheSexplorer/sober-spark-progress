@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 
 // Create a singleton to maintain the count across component remounts
@@ -28,21 +28,19 @@ export const CommunityTotal = () => {
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center justify-between">
-          Community Total
-          <Badge variant="secondary" className="ml-2">
-            {percentage}% to goal
-          </Badge>
-        </CardTitle>
+        <CardTitle className="text-lg">Community Total</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-4">
           <div className="text-4xl font-bold">{formatNumber(communityTotal)}</div>
           <div className="text-sm text-muted-foreground">
             days sober together
           </div>
-          <div className="text-sm text-muted-foreground">
-            Goal: {formatNumber(goal)} days
+          <div className="w-full space-y-2">
+            <Progress value={percentage} className="h-2" />
+            <div className="text-sm text-muted-foreground text-center">
+              Goal: {formatNumber(goal)} days
+            </div>
           </div>
         </div>
       </CardContent>
