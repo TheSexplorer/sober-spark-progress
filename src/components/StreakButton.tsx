@@ -49,7 +49,7 @@ export const StreakButton = ({ isSignedUp, onNeedSignUp }: StreakButtonProps) =>
             <span>Logged!</span>
           </div>
         ) : (
-          <span>Log Today</span>
+          <span>{isSignedUp ? "Log Today" : "Sign Up to Log"}</span>
         )}
       </Button>
     </div>
