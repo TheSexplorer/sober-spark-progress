@@ -26,103 +26,47 @@ const Index = () => {
   const [isSignedUp, setIsSignedUp] = useState(false);
 
   useEffect(() => {
-    // Check if user is already signed in
     const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setIsSignedUp(!!user);
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsSignedUp(!!session);
     };
     checkUser();
 
-    // Subscribe to auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setIsSignedUp(!!session);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      // Increment the community total
-      incrementCommunityTotal();
-      // Update the display
-      (window as any).updateCommunityTotalDisplay?.();
-      
-      setIsDialogOpen(false);
-      setEmail("");
-      setPassword("");
-      
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
       toast({
-        title: "Welcome to the community! 🎉",
-        description: "Please check your email to verify your account.",
-      });
-    } catch (error: any) {
-      toast({
-        title: "Error",
+        title: "Error signing out",
         description: error.message,
         variant: "destructive",
       });
     }
   };
 
-  const handleNeedSignUp = () => {
-    setIsDialogOpen(true);
-  };
-
   return (
     <div className="min-h-screen gradient-bg">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col items-center gap-8">
-          <div className="text-center mb-4">
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-center">
             <h1 className="text-4xl font-bold">Sober Days</h1>
             <p className="text-lg mt-2 text-muted-foreground">Every Day Counts</p>
           </div>
-          
-          <div className="flex flex-col items-center gap-12">
-            <CommunityTotal />
-            <StreakButton isSignedUp={isSignedUp} onNeedSignUp={handleNeedSignUp} />
-            <StreakStats />
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Join Our Sober Community</DialogTitle>
-                  <DialogDescription>
-                    Create an account to track your progress and contribute to our community.
-                  </DialogDescription>
-                </DialogHeader>
-                <form onSubmit={handleSignUp} className="space-y-4 mt-4">
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                  <Input
-                    type="password"
-                    placeholder="Choose a password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    minLength={6}
-                  />
-                  <Button type="submit" className="w-full">
-                    Sign Up
-                  </Button>
-                </form>
-              </DialogContent>
-            </Dialog>
-            <SupportCompanion />
-          </div>
+          <Button onClick={handleSignOut} variant="outline">
+            Sign Out
+          </Button>
+        </div>
+        
+        <div className="flex flex-col items-center gap-8">
+          <CommunityTotal />
+          <StreakButton isSignedUp={isSignedUp} onNeedSignUp={() => {}} />
+          <StreakStats />
         </div>
       </div>
     </div>
