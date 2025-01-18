@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Check } from "lucide-react";
-import { incrementCommunityTotal } from "./CommunityTotal";
 import { supabase } from "@/integrations/supabase/client";
 
 interface StreakButtonProps {
@@ -67,10 +66,6 @@ export const StreakButton = ({ isSignedUp, onNeedSignUp }: StreakButtonProps) =>
     }
 
     setIsLogged(true);
-    incrementCommunityTotal();
-    // Update the community total display
-    (window as any).updateCommunityTotalDisplay?.();
-    
     toast({
       title: "Day logged successfully! 🎉",
       description: "Keep up the great work! Every day counts.",
