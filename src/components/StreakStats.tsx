@@ -2,9 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export const StreakStats = () => {
-  const currentStreak = 7; // This would come from your backend
-  const longestStreak = 15; // This would come from your backend
-  const totalDays = 42; // This would come from your backend
+  const currentStreak = 0; // Reset to 0
+  const longestStreak = 0; // Reset to 0
+  const totalDays = 0; // Reset to 0
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-2xl">

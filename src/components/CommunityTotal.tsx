@@ -3,7 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 
 // Create a singleton to maintain the count across component remounts
-let globalCommunityTotal = 23456;
+let globalCommunityTotal = 0;
 
 export const getCommunityTotal = () => globalCommunityTotal;
 export const incrementCommunityTotal = () => {
