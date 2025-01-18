@@ -2,9 +2,9 @@ import { StreakButton } from "@/components/StreakButton";
 import { StreakStats } from "@/components/StreakStats";
 import { CommunityTotal } from "@/components/CommunityTotal";
 import { SupportCompanion } from "@/components/SupportCompanion";
-import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
+import { AuthDialog } from "@/components/AuthDialog";
 
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -40,6 +40,11 @@ const Index = () => {
           <SupportCompanion />
         </div>
       </div>
+      <AuthDialog 
+        open={showAuthDialog} 
+        onOpenChange={setShowAuthDialog}
+        isAuthenticated={isAuthenticated}
+      />
     </div>
   );
 };
