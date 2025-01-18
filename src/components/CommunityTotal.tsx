@@ -1,18 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { useState } from "react";
-
-// Create a singleton to maintain the count across component remounts
-let globalCommunityTotal = 0;
-
-export const getCommunityTotal = () => globalCommunityTotal;
-export const incrementCommunityTotal = () => {
-  globalCommunityTotal += 1;
-  return globalCommunityTotal;
-};
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const CommunityTotal = () => {
-  const [communityTotal, setCommunityTotal] = useState(globalCommunityTotal);
+  const [communityTotal, setCommunityTotal] = useState(0);
   const goal = 1000000;
   const percentage = Math.round((communityTotal / goal) * 100);
 
@@ -20,10 +12,37 @@ export const CommunityTotal = () => {
     return new Intl.NumberFormat('en-US').format(num);
   };
 
-  // Expose a way to update the display
-  (window as any).updateCommunityTotalDisplay = () => {
-    setCommunityTotal(globalCommunityTotal);
+  const fetchCommunityTotal = async () => {
+    const { count } = await supabase
+      .from('streaks')
+      .select('*', { count: 'exact', head: true });
+    
+    setCommunityTotal(count || 0);
   };
+
+  useEffect(() => {
+    fetchCommunityTotal();
+
+    // Subscribe to changes in the streaks table
+    const channel = supabase
+      .channel('streaks_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'streaks'
+        },
+        () => {
+          fetchCommunityTotal();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, []);
 
   return (
     <Card className="w-full max-w-2xl">
