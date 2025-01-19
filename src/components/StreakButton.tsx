@@ -24,13 +24,20 @@ export const StreakButton = ({ isSignedUp, onNeedSignUp }: StreakButtonProps) =>
     if (!session.session) return;
 
     const today = new Date().toISOString().split('T')[0];
-    const { data: streaks } = await supabase
+    
+    // Use count instead of selecting all records
+    const { count, error } = await supabase
       .from('streaks')
-      .select('*')
+      .select('*', { count: 'exact', head: true })
       .eq('user_id', session.session.user.id)
       .eq('date', today);
 
-    setIsLogged(streaks && streaks.length > 0);
+    if (error) {
+      console.error('Error checking today\'s log:', error);
+      return;
+    }
+
+    setIsLogged(count ? count > 0 : false);
   };
 
   const handleLogDay = async () => {
@@ -39,19 +46,25 @@ export const StreakButton = ({ isSignedUp, onNeedSignUp }: StreakButtonProps) =>
       return;
     }
 
-    // Check again right before logging to prevent double-logging
-    await checkTodayLog();
-    
-    if (isLogged) {
+    const { data: session } = await supabase.auth.getSession();
+    if (!session.session) return;
+
+    // Check for existing log first
+    const today = new Date().toISOString().split('T')[0];
+    const { count } = await supabase
+      .from('streaks')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', session.session.user.id)
+      .eq('date', today);
+
+    if (count && count > 0) {
       toast({
         title: "Already logged today! 🌟",
         description: "You've already logged your Sober Day. Great job! Come back tomorrow to continue your streak.",
       });
+      setIsLogged(true);
       return;
     }
-
-    const { data: session } = await supabase.auth.getSession();
-    if (!session.session) return;
 
     const { error } = await supabase
       .from('streaks')
