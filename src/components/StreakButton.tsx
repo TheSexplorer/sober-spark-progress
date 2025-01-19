@@ -39,6 +39,9 @@ export const StreakButton = ({ isSignedUp, onNeedSignUp }: StreakButtonProps) =>
       return;
     }
 
+    // Check again right before logging to prevent double-logging
+    await checkTodayLog();
+    
     if (isLogged) {
       toast({
         title: "Already logged today! 🌟",
