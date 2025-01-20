@@ -14,6 +14,7 @@ export const CommunityTotal = () => {
 
   const fetchCommunityTotal = async () => {
     try {
+      console.log('Fetching community total...');
       const { count, error } = await supabase
         .from('streaks')
         .select('*', { count: 'exact', head: true });
@@ -33,10 +34,12 @@ export const CommunityTotal = () => {
   };
 
   useEffect(() => {
+    console.log('Initializing CommunityTotal component...');
+    
     // Initial fetch
     fetchCommunityTotal();
 
-    // Enable REPLICA IDENTITY FULL for the streaks table to ensure complete row data
+    // Subscribe to ALL changes in the streaks table
     const channel = supabase
       .channel('streaks_changes')
       .on(
