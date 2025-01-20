@@ -13,31 +13,46 @@ export const CommunityTotal = () => {
   };
 
   const fetchCommunityTotal = async () => {
-    const { count } = await supabase
-      .from('streaks')
-      .select('*', { count: 'exact', head: true });
-    
-    setCommunityTotal(count || 0);
+    try {
+      const { count, error } = await supabase
+        .from('streaks')
+        .select('*', { count: 'exact', head: true });
+      
+      if (error) {
+        console.error('Error fetching community total:', error);
+        return;
+      }
+
+      console.log('Fetched community total:', count);
+      setCommunityTotal(count || 0);
+    } catch (error) {
+      console.error('Error in fetchCommunityTotal:', error);
+    }
   };
 
   useEffect(() => {
+    // Initial fetch
     fetchCommunityTotal();
 
-    // Subscribe to changes in the streaks table
+    // Subscribe to ALL changes in the streaks table
     const channel = supabase
-      .channel('streaks_changes')
+      .channel('streaks_db_changes')
       .on(
         'postgres_changes',
         {
-          event: '*',
+          event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
           schema: 'public',
           table: 'streaks'
         },
-        () => {
+        (payload) => {
+          console.log('Received real-time update:', payload);
+          // Fetch the new total whenever any change occurs
           fetchCommunityTotal();
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Subscription status:', status);
+      });
 
     return () => {
       channel.unsubscribe();
