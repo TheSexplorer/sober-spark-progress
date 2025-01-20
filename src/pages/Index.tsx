@@ -2,6 +2,7 @@ import { StreakButton } from "@/components/StreakButton";
 import { StreakStats } from "@/components/StreakStats";
 import { CommunityTotal } from "@/components/CommunityTotal";
 import { SupportCompanion } from "@/components/SupportCompanion";
+import { SoberStory } from "@/components/SoberStory";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
 import { AuthDialog } from "@/components/AuthDialog";
@@ -37,6 +38,7 @@ const Index = () => {
             onNeedSignUp={() => setShowAuthDialog(true)} 
           />
           <StreakStats />
+          <SoberStory />
           <SupportCompanion />
         </div>
       </div>
