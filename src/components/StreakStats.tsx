@@ -59,36 +59,36 @@ export const StreakStats = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-2xl">
-      <Card>
-        <CardHeader className="pb-2">
+      <Card className="flex flex-col items-center">
+        <CardHeader className="pb-2 text-center">
           <CardTitle className="text-lg">Total Days</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             <span className="text-3xl font-bold">{totalDays}</span>
             <Badge variant="secondary">days</Badge>
           </div>
         </CardContent>
       </Card>
       
-      <Card>
-        <CardHeader className="pb-2">
+      <Card className="flex flex-col items-center">
+        <CardHeader className="pb-2 text-center">
           <CardTitle className="text-lg">Current Streak</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             <span className="text-3xl font-bold">{currentStreak}</span>
             <Badge variant="secondary">days</Badge>
           </div>
         </CardContent>
       </Card>
       
-      <Card>
-        <CardHeader className="pb-2">
+      <Card className="flex flex-col items-center">
+        <CardHeader className="pb-2 text-center">
           <CardTitle className="text-lg">Longest Streak</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             <span className="text-3xl font-bold">{longestStreak}</span>
             <Badge variant="secondary">days</Badge>
           </div>
