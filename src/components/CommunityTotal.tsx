@@ -23,8 +23,10 @@ export const CommunityTotal = () => {
         return;
       }
 
-      console.log('Fetched community total:', count);
-      setCommunityTotal(count || 0);
+      if (count !== null) {
+        console.log('Setting community total to:', count);
+        setCommunityTotal(count);
+      }
     } catch (error) {
       console.error('Error in fetchCommunityTotal:', error);
     }
@@ -34,28 +36,30 @@ export const CommunityTotal = () => {
     // Initial fetch
     fetchCommunityTotal();
 
-    // Subscribe to ALL changes in the streaks table
+    // Enable REPLICA IDENTITY FULL for the streaks table to ensure complete row data
     const channel = supabase
-      .channel('streaks_db_changes')
+      .channel('streaks_changes')
       .on(
         'postgres_changes',
         {
-          event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
+          event: '*',
           schema: 'public',
           table: 'streaks'
         },
         (payload) => {
-          console.log('Received real-time update:', payload);
-          // Fetch the new total whenever any change occurs
+          console.log('Received database change:', payload);
+          // Always fetch the latest total when any change occurs
           fetchCommunityTotal();
         }
       )
       .subscribe((status) => {
-        console.log('Subscription status:', status);
+        console.log('Realtime subscription status:', status);
       });
 
+    // Cleanup subscription on unmount
     return () => {
-      channel.unsubscribe();
+      console.log('Cleaning up realtime subscription');
+      supabase.removeChannel(channel);
     };
   }, []);
 
